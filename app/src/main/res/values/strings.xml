@@ -3,4 +3,5 @@
 
     <string name="photo_by">Photo Credit</string>
     <string name="photo_by_desc">Photo taken by Vik Vik; uploaded to <![CDATA[<a href="https://www.wesaturate.com/photo/bfxImVCM">Wesaturate</a>]]></string>
+    <string name="enable_dci">Enable Wide Color Gamut</string>
 </resources>

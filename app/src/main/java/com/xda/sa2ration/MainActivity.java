@@ -9,8 +9,10 @@ import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
@@ -83,6 +85,22 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 sudo("setprop persist.sys.sf.color_saturation " + format(seekBar.getProgress() / 100F));
+            }
+        });
+
+        Switch dci = findViewById(R.id.dci);
+        try {
+            Class<?> SystemProperties = Class.forName("android.os.SystemProperties");
+            Method get = SystemProperties.getMethod("get", String.class);
+
+            dci.setChecked(Boolean.valueOf(get.invoke(null, "persist.sys.sf.native_mode").toString()));
+        } catch (Exception e) {}
+
+        dci.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                sudo("service call SurfaceFlinger 1023 i32 " + (isChecked ? 0: 1));
+                sudo("setprop persist.sys.sf.native_mode " + (isChecked ? 0 : 1));
             }
         });
     }
